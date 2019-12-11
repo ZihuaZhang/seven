@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            padding:0px;
+            margin:0px;
+        }
+        .little{
+            background: rgb(202, 202, 202);
+        }
+        .over{
+            position: relative;
+            display: inline-block;
+            width:800px;
+            height: 20px;
+            overflow: hidden;
+        }
+        .laba{
+            padding-left:100px;
+            margin: 0 auto;
+            width:900px;
+            height: 20px;
+            background: rgb(202, 202, 202);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .laba>img{
+            display: inline-block;
+            padding-bottom: 3px;
+        }
+        #text{
+            position: absolute;
+            left: 800px;
+            top:0x;
+            font-size: 13px;
+            color:red;
+            display: inline;
+        }
+        .big>span{
+            color:white;
+            display: block;
+            cursor:pointer;
+            width:30px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 30px;
+            position:absolute;
+            top:160px;
+            font-size: 30px;
+            text-align: center;
+            background: red;
+            opacity: 0;
+        }
+        #left{
+            left:30px;
+        }
+        #right{
+            right:30px;
+        }
+        .big{
+            position: relative;
+            width:1200px;
+            height: 382px;
+            overflow: hidden;
+            margin:0 auto;
+        }
+        .slide{
+            width:1200px;
+            height: 382px;
+            position: relative;
+        }
+        .slider{
+            width:1200px;
+            position: absolute;
+            overflow: hidden;
+        }
+        .num{
+            text-align:center;
+            position:absolute;
+            bottom: 5px;
+            left:500px;
+        }
+        .num>li{
+            line-height: 20px;
+            font-size: 10px;
+            display: inline-block;
+            width:20px;
+            height:20px;
+            margin-left:10px;
+            background:rgb(202, 202, 202);
+            border-radius:10px;
+            cursor:pointer;
+        }
+        .num>li:first-child{
+            margin-left:0px;
+            color:red;
+        }
+        #haha{
+            background: red;
+            color:white;
+        }
+    </style>
+    <script src="animate.js"></script>
+</head>
+<body>
+    <div class="morebig">
+        <div class="little">
+            <div class="laba">
+                <img src="images/a15.png" alt="">
+                <div class="over">
+                    <p id="text">[温馨提示]最近有不少不法分子在网上骗人，请大家注意!!!!</p>
+                </div>
+            </div>
+        </div>
+        <div class="big">
+            <div class = "slide">
+                <div class="slider"><img src="images/b5.png" alt="b5"></div>
+                <div class="slider"><img src="images/b1.png" alt="b1"></div>
+                <div class="slider"><img src="images/b2.png" alt="b2"></div>
+                <div class="slider"><img src="images/b3.png" alt="b3"></div>
+                <div class="slider"><img src="images/b4.png" alt="b4"></div>
+                <div class="slider"><img src="images/b5.png" alt="b5"></div>
+                <div class="slider"><img src="images/b1.png" alt="b1"></div>
+            </div>
+            <span id="left"><</span>
+            <span id="right">></span>
+            <div class="num">
+                <li id="haha">1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var text = document.getElementById("text");
+    setInterval(function(){
+        text.style.left=parseInt(getStyle(text,"left"))-1+"px";
+        if(parseInt(getStyle(text,"left"))<=-400){
+            text.style.left="800px";
+        }
+    },15)
+
+    var slider = document.getElementsByClassName("slider");
+    for(i=0;i<slider.length;i++){
+        slider[i].setAttribute("style","left:"+(i-1)*1200+"px;")
+    }
+
+    var slide = document.getElementsByClassName("slide")[0];
+    var index = 0;
+    var timer = window.setInterval(function(){
+        nextright()
+    },3000);
+    var left = document.getElementById("left");
+    var right = document.getElementById("right");
+    function nextright(){
+        index++;
+        change();
+        animate(slide,{left:(-1200)*index},function(){
+            if(index==5){
+                slide.style.left="0px";
+                index=0;
+            }
+        });   
+    }
+    right.onclick=nextright;
+
+    function nextleft(){
+        index--;
+        change();
+        animate(slide,{left:(-1200)*index},function(){
+            if(index==-1){
+                slide.style.left="-4800px";
+                index=4;
+            }
+        });   
+    }
+    left.onclick=nextleft;
+
+    var big = document.getElementsByClassName("big")[0];
+    big.onmouseover=function(){
+        window.clearInterval(timer);
+        animate(left,{opacity:50});
+        animate(right,{opacity:50});
+    }
+    big.onmouseout = function(){
+        timer = window.setInterval(function(){
+            nextright();
+        },3000);
+        animate(left,{opacity:0});
+        animate(right,{opacity:0});
+    }
+
+    var image = document.getElementsByTagName("li");
+    for(var i= 0 ;i<image.length;i++){
+        image[i].idx=i;
+        image[i].onclick=function(){
+            var t =document.getElementById("haha");
+            t.removeAttribute("id");
+            this.setAttribute("id","haha");
+            index = this.idx;
+            animate(slide,{left:-1200*this.idx});
+        }
+    }
+    function change(){
+        var t =document.getElementById("haha");
+        t.removeAttribute("id");
+        image[(index+5)%5].setAttribute("id","haha");
+    }
+</script>
+</html>
